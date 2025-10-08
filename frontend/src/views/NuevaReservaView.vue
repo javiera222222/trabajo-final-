@@ -1,0 +1,230 @@
+<template>
+  <div v-if="habitacion" class="reserva-container">
+    <div class="reserva-card">
+      <!-- Info habitación -->
+      <div class="habitacion-card">
+        <h2 class="habitacion-nombre">{{ habitacion.nombre }}</h2>
+        <p class="habitacion-precio">Precio por noche: ${{ habitacion.precio }}</p>
+      </div>
+
+      <form class="reserva-form" @submit.prevent="crearReserva">
+        <h3 class="form-title">Nueva Reserva</h3>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Cantidad de noches</label>
+            <input type="number" v-model.number="reserva.cantNoches" min="1" placeholder="..."/>
+          </div>
+
+          <div class="form-group">
+            <label>Desde</label>
+            <input type="date" v-model="reserva.desde" />
+          </div>
+
+          <div class="form-group">
+            <label>Hasta</label>
+            <input type="date" v-model="reserva.hasta" />
+          </div>
+
+          <div class="form-group">
+            <label>Precio total</label>
+            <p class="precio-total">$ {{ habitacion.precio * reserva.cantNoches }}</p>
+          </div>
+
+          <div class="form-group">
+            <label>DNI</label>
+            <input v-model="reserva.dni_huesped" placeholder="..."/>
+          </div>
+
+          <div v-if="auth.grupos.includes('propietario')" class="form-group">
+            <label>Nombre huésped</label>
+            <input v-model="reserva.nombre_huesped" placeholder="..."/>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-guardar">Guardar reserva</button>
+
+        <p v-if="error" class="error">{{ error }}</p>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { createReserva } from '../api/reserva.js'
+import { gethabitacion } from '../api/habitacion.js'
+import { useAuthStore } from '../stores/auth'
+import { useRoute, useRouter } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+const habitacionId = route.params.id
+const auth = useAuthStore()
+const error = ref(null)
+const habitacion = ref(null)
+const loading = ref(false)
+
+const reserva = ref({
+  cantNoches: 1,
+  desde: '',
+  hasta: '',
+  checkIn: null,
+  checkOut: null,
+  huesped: null,
+  precio: 0,
+  pagado: false,
+  dni_huesped: '',
+  habitacion: null,
+  nombre_huesped: ''
+})
+
+const crearReserva = async () => {
+  try {
+    if (!reserva.value.desde || !reserva.value.hasta || !reserva.value.dni_huesped) {
+      error.value = "Completa todos los campos obligatorios";
+      return;
+    }
+    reserva.value.habitacion = habitacion.value.id;
+    reserva.value.precio = habitacion.value.precio * reserva.value.cantNoches;
+    if (reserva.value.checkIn) reserva.value.checkIn += ":00";
+    if (reserva.value.checkOut) reserva.value.checkOut += ":00";
+    const reservaCreada = await createReserva(reserva.value);
+    router.push(`/reserva/${reservaCreada.id}`);
+  } catch (err) {
+    console.error(err.response?.data);
+    error.value = "Error al crear la reserva";
+  }
+};
+
+const cargarHabitacion = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    habitacion.value = await gethabitacion(habitacionId)
+    reserva.value.habitacion = habitacion.value.id
+  } catch (e) {
+    error.value = 'Error al cargar la habitación'
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(cargarHabitacion)
+</script>
+
+<style scoped>
+.reserva-container {
+  min-height: 100vh;
+  padding: 30px;
+  background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
+  background-size: cover; 
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.reserva-card {
+  background: rgba(255,255,255,0.95);
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+  width: 100%;
+  max-width: 700px;
+}
+
+.habitacion-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.habitacion-nombre {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.habitacion-precio {
+  font-size: 1.2rem;
+  color: #94618e;
+}
+
+.reserva-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-title {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #49274a;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #94618e;
+}
+
+.form-group input[type='text'],
+.form-group input[type='number'],
+.form-group input[type='date'] {
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #4cafef;
+  box-shadow: 0 0 4px rgba(76, 175, 239, 0.4);
+}
+
+.precio-total {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #49274a;
+}
+
+.btn-guardar {
+  padding: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #4cafef;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-guardar:hover {
+  background: #3498db;
+}
+
+.error {
+  color: red;
+  margin-top: 1rem;
+  text-align: center;
+}
+</style>

@@ -1,0 +1,140 @@
+<template>
+  <div class="reservas-container">
+    <p v-if="loading" class="loading-text">Cargando reservas...</p>
+
+    <div v-else-if="reservas.length > 0" class="reservas-grid">
+      <div v-for="reserva in reservas" :key="reserva.id" class="reserva-card">
+        <h3>Reserva #{{ reserva.id }}</h3>
+        <p><strong>Habitación:</strong> {{ reserva.habitacion?.nombre }}</p>
+        <p><strong>Huésped:</strong> {{ reserva.huesped || reserva.huesped?.username || '—' }}</p>
+        <p><strong>DNI:</strong> {{ reserva.dni_huesped }}</p>
+        <p><strong>Noches:</strong> {{ reserva.cantNoches }}</p>
+        <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
+        <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
+        <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-pending']">
+          {{ reserva.pagado ? 'Pagado' : 'Pendiente' }}
+        </span>
+        <router-link :to="`/Reserva/${reserva.id}`" class="detalle-btn">Ver detalles</router-link>
+      </div>
+    </div>
+
+    <p v-else>No se han cargado reservas aún.</p>
+    <p v-if="error" class="error">{{ error }}</p>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from "vue"
+import { getReservas } from "../api/reserva.js"
+import { gethabitaciones } from "../api/habitacion.js"
+
+const reservas = ref([])
+const loading = ref(false)
+const error = ref(null)
+
+const formatFecha = (fecha) => {
+  if (!fecha) return "—"
+  return new Date(fecha).toLocaleDateString("es-AR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  })
+}
+
+const cargarReservas = async () => {
+  loading.value = true
+  error.value = null
+  reservas.value = []
+  try {
+    reservas.value = await getReservas()
+    for (let r of reservas.value) {
+      try {
+        const habitacion = await gethabitaciones(r.habitacion)
+        r.habitacion = habitacion
+      } catch (err) {
+        console.error("Error cargando alojamiento", err)
+      }
+    }
+  } catch (e) {
+    error.value = "Error al cargar reservas"
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(cargarReservas)
+</script>
+
+<style scoped>
+.reservas-container {
+  min-height: 100vh;
+  padding: 30px;
+  background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-text {
+  color: #94618e;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.reservas-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  width: 100%;
+  max-width: 1200px;
+}
+
+.reserva-card {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reserva-card h3 {
+  margin: 0 0 10px 0;
+  color: #49274a;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  margin-top: 5px;
+  width: fit-content;
+}
+
+.badge-success { background: #28a745; color: white; }
+.badge-pending { background: #dc3545; color: white; }
+
+.detalle-btn {
+  margin-top: 10px;
+  text-align: center;
+  background-color:  #be84b7;
+  color: white !important;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.detalle-btn:hover {
+  background-color: #49274a;
+}
+
+.error {
+  color: red;
+  margin-top: 1rem;
+}
+</style>
