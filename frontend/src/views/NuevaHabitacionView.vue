@@ -1,7 +1,7 @@
 <template>
   <div class="form-container">
     <form class="habitacion-form" @submit.prevent="crearHabitacion">
-      <h3 class="form-title">Nueva Habitación</h3>
+      <h1 class="titulo-principal">Crea una nueva habitacion</h1>
 
       <div class="form-grid">
         <div class="form-group">

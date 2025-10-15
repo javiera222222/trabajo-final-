@@ -1,7 +1,8 @@
 <template>
-  <div class="pagos-container">
+  <div class="page-container">
+     <h1 class="titulo-principal">Registro de pagos</h1>
     <div class="btn-calendario">
-      <VBtn color="primary" @click="mostrarCalendario = true">
+      <VBtn  @click="mostrarCalendario = true">
         📅 {{ formatearFecha(fechaSeleccionada) }}
       </VBtn>
     </div>
@@ -203,5 +204,17 @@ onMounted(() => {
   color: red;
   text-align: center;
   margin-top: 1rem;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #94618e, #7b4b8e);
+  transition: transform 0.3s;
 }
 </style>

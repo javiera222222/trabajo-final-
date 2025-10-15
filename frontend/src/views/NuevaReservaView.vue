@@ -1,6 +1,7 @@
 <template>
   <div v-if="habitacion" class="reserva-container">
     <div class="reserva-card">
+      <h1 class="titulo-principal">Crea una nueva reserva</h1>
       <!-- Info habitación -->
       <div class="habitacion-card">
         <h2 class="habitacion-nombre">{{ habitacion.nombre }}</h2>
@@ -33,12 +34,16 @@
 
           <div class="form-group">
             <label>DNI</label>
-            <input v-model="reserva.dni_huesped" placeholder="..."/>
+            <input v-model="reserva.dniHuesped" placeholder="..."/>
+          </div>
+          <div class="form-group">
+            <label>Cantidad de huespedes</label>
+            <input v-model="reserva.cantHuespedesHuesped" placeholder="..."/>
           </div>
 
           <div v-if="auth.grupos.includes('propietario')" class="form-group">
             <label>Nombre huésped</label>
-            <input v-model="reserva.nombre_huesped" placeholder="..."/>
+            <input v-model="reserva.nombreHuesped" placeholder="..."/>
           </div>
         </div>
 
@@ -74,14 +79,15 @@ const reserva = ref({
   huesped: null,
   precio: 0,
   pagado: false,
-  dni_huesped: '',
+  dniHuesped: '',
   habitacion: null,
-  nombre_huesped: ''
+  nombreHuesped: '',
+  cantHuespedes:0
 })
 
 const crearReserva = async () => {
   try {
-    if (!reserva.value.desde || !reserva.value.hasta || !reserva.value.dni_huesped) {
+    if (!reserva.value.desde || !reserva.value.hasta || !reserva.value.dniHuesped) {
       error.value = "Completa todos los campos obligatorios";
       return;
     }

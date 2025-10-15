@@ -6,7 +6,7 @@
     <div v-else-if="habitacion" class="habitacion-card">
       <div class="habitacion-layout">
         <div class="habitacion-info">
-          <h1 class="habitacion-nombre">{{ habitacion.nombre }}</h1>
+          <h1 class="titulo-principal">Habitacion {{ habitacion.nombre }}</h1>
 
           <p class="habitacion-precio">${{ habitacion.precio }}</p>
           <p class="habitacion-tipo icono-texto">
@@ -39,12 +39,12 @@
             </div>
 
             <div v-if="habitacion.cocina" class="icono-texto">
-              <img src="/icons/frito.svg" alt="Cocina" class="logo-img"/>
+              <img src="../../public/frito.png" alt="Cocina" class="logo-img"/>
               <span>Cocina disponible</span>
             </div>
 
             <div v-if="habitacion.desayuno" class="icono-texto">
-              <img src="/icons/desayuno.svg" alt="Desayuno" class="logo-img"/>
+              <img src="../../public/desayuno.png" alt="Desayuno" class="logo-img"/>
               <span>Desayuno incluido</span>
             </div>
           </div>
@@ -78,29 +78,26 @@
         </div>
 
 <div class="habitacion-foto">
-
   <Galleria
-    v-if="images.length > 0"
-    ref="galleriaRef"
+    v-if="images.length"
     :value="images"
-    :numVisible="5"
+    :numVisible="3"
     :circular="true"
-    :showItemNavigators="true"
     :showThumbnails="true"
-    :fullScreen="true"
-    containerStyle="max-width: 450px; border-radius: 16px; overflow: hidden;"
+    :showIndicators="false"
+    :showItemNavigators="true"
+    containerStyle="max-width: 600px; border-radius: 12px; overflow: hidden;"
   >
     <template #item="slotProps">
       <img
         :src="slotProps.item.itemImageSrc"
         :alt="slotProps.item.alt"
         class="foto-item"
-        @click="abrirGaleria"
       />
     </template>
 
     <template #thumbnail="slotProps">
-      <img 
+      <img
         :src="slotProps.item.thumbnailImageSrc"
         :alt="slotProps.item.alt"
         class="foto-miniatura"
@@ -108,8 +105,9 @@
     </template>
   </Galleria>
 
-  <p v-else class="sin-fotos">No hay fotos disponibles.</p>
+  <p v-else class="sin-fotos">Sin fotos disponibles</p>
 </div>
+
 
       </div>
     </div>
@@ -177,22 +175,12 @@ import{getfoto} from "../api/fotos.js";
 const auth = useAuthStore();
 const route = useRoute();
 const router = useRouter();
-const galleriaRef = ref(null);
 const habitacion = ref(null);
 const alojamiento = ref(null);
 const loading = ref(false);
 const error = ref(null);
 const editar = ref(false);
 const images = ref([]);
-
-
-
-
-const abrirGaleria = () => {
-  if (galleriaRef.value) {
-    galleriaRef.value.show(); 
-  }
-};
 
 
 const cargarHabitacion = async () => {
@@ -217,6 +205,7 @@ const cargarFotos = async () => {
       thumbnailImageSrc: foto.imagen,
       alt: `Foto ${foto.id}`
     }));
+    console.log("Fotos cargadas:", images.value);
   } catch (e) {
     console.error("Error al cargar fotos:", e);
   }
@@ -261,7 +250,6 @@ const irAReservaNueva = () => {
 </script>
 
 <style scoped>
-
 .habitacion-container {
   min-height: 100vh;
   padding: 40px 20px;
@@ -272,7 +260,6 @@ const irAReservaNueva = () => {
   flex-direction: column;
   align-items: center;
 }
-
 
 .habitacion-card {
   background: rgba(255, 255, 255, 0.9);
@@ -296,7 +283,6 @@ const irAReservaNueva = () => {
   flex: 1 1 50%;
 }
 
-
 .habitacion-foto {
   flex: 1 1 40%;
   display: flex;
@@ -304,12 +290,12 @@ const irAReservaNueva = () => {
   align-items: center;
   padding: 10px;
   margin-left: 40px;
-  min-height: 320px; }
-
+  min-height: 320px;
+}
 
 .p-galleria {
   width: 100%;
-  min-height: 300px; 
+  min-height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -449,13 +435,11 @@ const irAReservaNueva = () => {
   .habitacion-layout {
     flex-direction: column;
   }
-
   .habitacion-info,
   .habitacion-foto {
     flex: 1 1 100%;
     margin-left: 0;
   }
-
   .acciones {
     flex-direction: column;
   }
@@ -465,7 +449,6 @@ const irAReservaNueva = () => {
   .foto-item {
     height: 220px;
   }
-
   .foto-miniatura {
     width: 60px;
     height: 45px;
@@ -476,16 +459,13 @@ const irAReservaNueva = () => {
   .habitacion-nombre {
     font-size: 1.6rem;
   }
-
   .habitacion-precio {
     font-size: 1.2rem;
   }
-
   .logo-img {
     width: 18px;
     height: 18px;
   }
-
   .reservar-btn,
   .eliminar-btn {
     width: 100%;

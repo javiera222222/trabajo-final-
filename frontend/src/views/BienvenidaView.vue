@@ -104,34 +104,34 @@ onUnmounted(() => {
   gap: 15px;
   list-style: none;
   z-index: 10;
-  width: 35px;
+  width: 300px;
 }
 
 .menu-superior li a {
   text-decoration: none;
   font-weight: bold;
-  color: #94618e;
   padding: 8px 12px;
   border-radius: 6px;
   transition: background 0.3s;
-  background-color: #f8eee7;
+  background-color: #49274a;
+  color: #f8eee7;
 }
 
 .menu-superior li a:hover {
-  background-color: #49274a;
-  color: #f8eee7;
+  background-color: #f8eee7;
+  color: #94618e;
 }
 
 .bienvenida {
   display: flex;
   height: 100vh;
-  background: #be84b7;
+  background: #f4decb;
   overflow: hidden;
 }
 
 .texto {
   flex: 1;
-  background-color:rgba(255, 255, 255, 0.9);
+  background-color:#f4decb;
   padding: 60px;
   display: flex;
   flex-direction: column;
@@ -264,11 +264,6 @@ onUnmounted(() => {
   }
 }
 
-.titulo-principal {
-  font-size: 50px;
-  color: #49274a;
-  margin-bottom: 30px;
-  text-align: center;
-}
+
 
 </style>

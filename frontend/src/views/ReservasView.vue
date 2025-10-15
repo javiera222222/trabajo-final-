@@ -1,14 +1,15 @@
 <template>
   <div class="reservas-container">
+    <h1 class="titulo-principal">Tus reservas</h1>
     <p v-if="loading" class="loading-text">Cargando reservas...</p>
 
     <div v-else-if="reservas.length > 0" class="reservas-grid">
       <div v-for="reserva in reservas" :key="reserva.id" class="reserva-card">
         <h3>Reserva #{{ reserva.id }}</h3>
-        <p><strong>Habitación:</strong> {{ reserva.habitacion?.nombre }}</p>
+        <p><strong>Habitación:</strong> {{ reserva.habitacionNombre }}</p>
         <p><strong>Huésped:</strong> {{ reserva.huesped || reserva.huesped?.username || '—' }}</p>
-        <p><strong>DNI:</strong> {{ reserva.dni_huesped }}</p>
-        <p><strong>Noches:</strong> {{ reserva.cantNoches }}</p>
+        <p><strong>Cantidad de huespedes:</strong> {{ reserva.cantHuespedes }}</p>
+        <p><strong>Cantidad de noches:</strong> {{ reserva.cantNoches }}</p>
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
         <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-pending']">
@@ -47,15 +48,15 @@ const cargarReservas = async () => {
   reservas.value = []
   try {
     reservas.value = await getReservas()
-    for (let r of reservas.value) {
-      try {
-        const habitacion = await gethabitaciones(r.habitacion)
-        r.habitacion = habitacion
-      } catch (err) {
-        console.error("Error cargando alojamiento", err)
-      }
-    }
-  } catch (e) {
+    const habitacionesArray = await gethabitaciones()
+
+   reservas.value = reservas.value.map(r => {
+  const hab = habitacionesArray.find(h => h.id === r.habitacion)
+  return { ...r, habitacionNombre: hab ? hab.nombre : "—" }
+})
+
+
+     } catch (e) {
     error.value = "Error al cargar reservas"
   } finally {
     loading.value = false
@@ -137,4 +138,6 @@ onMounted(cargarReservas)
   color: red;
   margin-top: 1rem;
 }
+
+
 </style>

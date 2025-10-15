@@ -54,7 +54,7 @@ class ReservaViewSet(viewsets.ModelViewSet):
         if user.groups.filter(name="cliente").exists():
             return Reserva.objects.filter(huesped=user)
         return Reserva.objects.filter(habitacion__alojamiento__propietario=user)
-
+ 
 
 class PagoViewSet(viewsets.ModelViewSet):
     serializer_class = PagoSerializer

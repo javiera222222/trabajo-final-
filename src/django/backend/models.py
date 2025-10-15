@@ -39,8 +39,9 @@ class Reserva(models.Model):
    precio= models.DecimalField(max_digits=10, decimal_places=2)
    pagado= models.BooleanField()
    huesped = models.ForeignKey( settings.AUTH_USER_MODEL, on_delete=models.CASCADE,null=True, blank=True)
-   dni_huesped= models.CharField(max_length=50)
-   nombre_huesped = models.CharField(max_length=255, blank=True, null=True)
+   dniHuesped= models.CharField(max_length=50)
+   nombreHuesped = models.CharField(max_length=255, blank=True, null=True)
+   cantHuespedes= models.IntegerField()
 
 class Pago(models.Model):
    id= models.AutoField(primary_key=True)

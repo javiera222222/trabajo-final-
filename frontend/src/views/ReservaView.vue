@@ -1,9 +1,10 @@
 <template>
   <div class="reserva-container">
+   
     <p v-if="loading">Cargando reserva...</p>
 
     <div v-else-if="reserva" class="reserva-card">
-
+<h1 class="titulo-principal">Tu reserva</h1>
       <div class="resumen">
         <div class="resumen-item">
           <h3>{{ reserva.cantNoches }}</h3>
@@ -13,6 +14,7 @@
           <h3>${{ reserva.precio }}</h3>
           <p>Precio</p>
         </div>
+        
         <div class="resumen-item">
           <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-danger']">
             {{ reserva.pagado ? 'Pagado' : 'Pendiente' }}
@@ -34,11 +36,13 @@
       </div>
 
       <div v-if="!editar" class="detalles">
+        <p><strong>Habitación:</strong> {{ reserva.habitacionNombre }}</p>
         <p><strong>ID Reserva:</strong> {{ reserva.id }}</p>
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
         <p><strong>Huésped:</strong> {{ reserva.huesped }}</p>
-        <p><strong>DNI:</strong> {{ reserva.dni_huesped }}</p>
+        <p><strong>DNI:</strong> {{ reserva.dniHuesped }}</p>
+        <p><strong>Cantidad de huespedes:</strong> {{ reserva.cantHuespedes }}</p>
       </div>
 
       <div class="acciones" v-if="!editar">
@@ -102,6 +106,7 @@ import { useAuthStore } from '../stores/auth'
 import { getReserva, updateReserva, deleteReserva } from "../api/reserva.js"
 import { createpago } from "../api/pago.js"
 import { useRoute, useRouter } from 'vue-router'
+import { gethabitacion } from "../api/habitacion.js"
 
 const router = useRouter()
 const route = useRoute()
@@ -133,12 +138,19 @@ const cargarReserva = async () => {
   error.value = null
   try {
     reserva.value = await getReserva(route.params.id)
+
+    const habitacion = await gethabitacion(reserva.value.habitacion)
+    reserva.value.habitacionNombre = habitacion.nombre
+
+
   } catch (e) {
-    error.value = 'Error al cargar reserva'
-  } finally {
+  console.error('Error al actualizar la reserva:', e.response?.data || e.message)
+}
+ finally {
     loading.value = false
   }
 }
+
 
 onMounted(() => {
   cargarReserva()
@@ -146,12 +158,16 @@ onMounted(() => {
 
 const editarReserva = async () => {
   try {
-    await updateReserva(reserva.value.id, reserva.value)
-    editar.value = false   
+    
+
+    await updateReserva(reserva.value.id, reserva.value);
+
+    editar.value = false; 
+    await cargarReserva(); 
   } catch (err) {
-    console.error('Error al actualizar la reserva:', err)
+    console.error("Error al actualizar la reserva:", err);
   }
-}
+};
 
 const eliminarReserva = async () => {
   if (confirm('¿Seguro deseas eliminar esta reserva?')) {
@@ -259,5 +275,17 @@ const GuardarPago = async () => {
   border-radius: 10px;
   background: #fff5f8;
   border-left: 6px solid #94618e;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #94618e, #7b4b8e);
+  transition: transform 0.3s;
 }
 </style>

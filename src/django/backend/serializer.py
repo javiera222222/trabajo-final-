@@ -28,11 +28,28 @@ class ReservaSerializer(serializers.ModelSerializer):
         model = Reserva
         fields = "__all__"
 
+    def validate(self, data):
+        habitacion = data.get('habitacion')
+        desde = data.get('desde')
+        hasta = data.get('hasta')
+
+        reserva_id = self.instance.id if self.instance else None
+
+        if Reserva.objects.filter(
+            habitacion=habitacion,
+            desde__lt=hasta,
+            hasta__gt=desde
+        ).exclude(id=reserva_id).exists():
+            raise serializers.ValidationError(
+                "La habitación ya está reservada en esas fechas."
+            )
+
+        return data
+
     def create(self, validated_data):
         request = self.context["request"]
         if not validated_data.get("huesped"):
             validated_data["huesped"] = request.user
-
         return super().create(validated_data)
 
 

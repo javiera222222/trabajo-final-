@@ -1,6 +1,6 @@
 <template>
   <div class="habitaciones-container">
-    <h2 class="page-title">Nuestras Habitaciones</h2>
+    <h1 class="titulo-principal">Habitaciones</h1>
 
     <div class="filtro-container">
       <label for="ubicacion">Filtrar por ubicación:</label>
@@ -119,33 +119,93 @@ onMounted(() => {
 
 <style scoped>
 
-.filtro-container {
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.filtro-container input {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 60%;
-  max-width: 400px;
-}
-
 .habitaciones-container {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
-  background-size: cover; 
+  background-size: cover;
+  position: relative;
+  z-index: 1;
 }
 
 .page-title {
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: #fff;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #94618e, #7b4b8e);
+  -webkit-text-fill-color: transparent;
+  transition: transform 0.3s;
 }
+
+.page-title:hover {
+  transform: scale(1.05);
+}
+
+
+.filtro-container {
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.filtro-container label {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #4a2858;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.filtro-container input {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 2px solid #7b4b8e;
+  width: 65%;
+  max-width: 420px;
+  font-size: 1rem;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #333;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.filtro-container input:focus {
+  border-color: #94618e;
+  box-shadow: 0 0 10px rgba(148, 97, 142, 0.6);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+
+.nueva {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 10; 
+}
+
+.nueva .btn-guardar {
+  padding: 0.9rem 1.3rem;
+  font-size: 1.05rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #94618e, #7b4b8e);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.nueva .btn-guardar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(148, 97, 142, 0.6);
+}
+
 
 .habitaciones-grid {
   display: grid;
@@ -202,9 +262,13 @@ onMounted(() => {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.2s;
 }
 
+.btn-guardar:hover {
+  background: #7b4b8e;
+  transform: translateY(-2px);
+}
 
 
 .error {
@@ -212,10 +276,7 @@ onMounted(() => {
   color: red;
   margin-top: 1rem;
 }
-
-.nueva{
-  justify-content: center;
-  width: 40%;
-  
-}
 </style>
+
+
+
