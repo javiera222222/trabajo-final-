@@ -2,7 +2,7 @@
   <div v-if="habitacion" class="reserva-container">
     <div class="reserva-card">
       <h1 class="titulo-principal">Crea una nueva reserva</h1>
-      <!-- Info habitación -->
+
       <div class="habitacion-card">
         <h2 class="habitacion-nombre">{{ habitacion.nombre }}</h2>
         <p class="habitacion-precio">Precio por noche: ${{ habitacion.precio }}</p>

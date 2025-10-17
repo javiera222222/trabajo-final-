@@ -9,6 +9,7 @@ module.exports = defineConfig({
     client: {
       overlay: true,
     },
+    allowedHosts: 'all',
     watchFiles: {
       paths: ['src/**/*'],
       options: {

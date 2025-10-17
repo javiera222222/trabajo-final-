@@ -15,4 +15,5 @@ class RegistroUsuarioView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             return Response({"mensaje": "Usuario creado correctamente."}, status=status.HTTP_201_CREATED)
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

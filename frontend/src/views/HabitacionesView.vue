@@ -2,7 +2,7 @@
   <div class="habitaciones-container">
     <h1 class="titulo-principal">Habitaciones</h1>
 
-    <div class="filtro-container">
+    <div v-if="auth.grupos.includes('cliente')"  class="filtro-container">
       <label for="ubicacion">Filtrar por ubicación:</label>
       <input 
         id="ubicacion" 

@@ -17,9 +17,9 @@
     <div
       v-for="habitacion in habitaciones"
       :key="habitacion.id"
-      class="habitacion-row"
+      class="habitaciones"
     >
-      <div class="habitacion-name">{{ habitacion.nombre }}</div>
+      <div class="habitacionNombre">{{ habitacion.nombre }}</div>
 
       <div class="dias-grid">
         <div v-for="dia in diasMes" :key="dia" class="fechas"></div>
@@ -183,7 +183,7 @@ const mesSiguiente = () => {
 }
 
 
-.habitacion-row {
+.habitaciones {
   display: grid;
   grid-template-columns: 150px 1fr;
   border-top: 1px solid #ddd;
@@ -192,7 +192,7 @@ const mesSiguiente = () => {
 }
 
 
-.habitacion-name {
+.habitacionNombre {
   padding: 8px;
   font-weight: bold;
   background: #f8eee7;
@@ -263,10 +263,10 @@ const mesSiguiente = () => {
     grid-template-columns: 120px repeat(auto-fit, minmax(30px, 1fr));
     font-size: 0.8rem;
   }
-  .habitacion-row {
+  .habitaciones {
     grid-template-columns: 120px 1fr;
   }
-  .habitacion-name {
+  .habitacionNombre {
     font-size: 0.8rem;
     padding: 6px;
   }
@@ -278,10 +278,10 @@ const mesSiguiente = () => {
   .dias {
     grid-template-columns: 100px repeat(auto-fit, minmax(25px, 1fr));
   }
-  .habitacion-row {
+  .habitaciones {
     grid-template-columns: 100px 1fr;
   }
-  .habitacion-name {
+  .habitacionNombre {
     font-size: 0.7rem;
   }
   .reserva-numero {

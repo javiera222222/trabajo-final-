@@ -15,11 +15,6 @@
         </div>
 
         <div class="form-group">
-          <label>Tipo</label>
-          <input v-model="habitacion.tipoHabitacion" placeholder="Ej: 1" />
-        </div>
-
-        <div class="form-group">
           <label>Camas simples</label>
           <input v-model.number="habitacion.camasSimples" type="number" min="0" />
         </div>
@@ -56,12 +51,14 @@
         </div>
       </div>
 
-      <div v-if="previews.length" class="preview-list">
-        <p>Vista previa:</p>
-        <div v-for="(src, i) in previews" :key="i" class="preview-row">
-          <img :src="src" alt="Vista previa" class="preview-img" />
-        </div>
-      </div>
+    <div v-if="previews.length" class="preview-list">
+  <p>Vista previa:</p>
+  <div v-for="(item, i) in previews" :key="item.id" class="preview-row">
+    <img :src="item.preview" alt="Vista previa" class="preview-img" />
+    <button type="button" class="btn-eliminar" @click="removeFile(i)">Eliminar</button>
+  </div>
+</div>
+
 
       <button type="submit" class="btn-guardar">Guardar habitación</button>
       <p v-if="error" class="error">{{ error }}</p>
@@ -79,6 +76,7 @@ const router = useRouter()
 const error = ref(null)
 const archivosImagen = ref([])
 const previews = ref([])
+let nextId=0
 
 const habitacion = ref({
   nombre: '',
@@ -114,7 +112,7 @@ const subirFotos = async (habitacionId) => {
   for (const file of archivosImagen.value) {
     const formData = new FormData()
     formData.append("habitacion", habitacionId)
-    formData.append("imagenes", file)
+    formData.append("imagen", file)
 
     try {
       await createfoto(formData, true)
@@ -125,13 +123,26 @@ const subirFotos = async (habitacionId) => {
 }
 
 const handleFileChange = (event) => {
-  archivosImagen.value = Array.from(event.target.files)
-  previews.value = archivosImagen.value.map(file => URL.createObjectURL(file))
+  const seleccion = Array.from(event.target.files)  // solo Files
+  archivosImagen.value = [...archivosImagen.value, ...seleccion]  // mantener Files puros
+
+  const nuevosPreview = seleccion.map(file => ({
+    id: nextId++,          // usar el nextId
+    preview: URL.createObjectURL(file)
+  }))
+  previews.value = [...previews.value, ...nuevosPreview]
+
+  event.target.value = ''  // limpiar input para poder seleccionar más
 }
+
+const removeFile = (index) => {
+  URL.revokeObjectURL(previews.value[index].preview)
+  previews.value.splice(index, 1)
+  archivosImagen.value.splice(index, 1)
+}
+
+
 </script>
-
-
-
 
 
 
@@ -247,4 +258,21 @@ const handleFileChange = (event) => {
   margin-top: 1rem;
   text-align: center;
 }
+
+.btn-eliminar {
+  margin-left: 10px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  color: white;
+  background: #d9534f;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-eliminar:hover {
+  background: #c9302c;
+}
+
 </style>

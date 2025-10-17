@@ -26,7 +26,9 @@ export const deletefoto = async (id) => {
     return response.data
 }
 
-export const createfoto = async (data) => {
-    const response = await api.post('backend/api/fotos/', data)
-    return response.data
+export const createfoto = async (formData) => {
+    return (await api.post('backend/api/fotos/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    })).data
+
 }
