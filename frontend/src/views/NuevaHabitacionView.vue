@@ -123,16 +123,16 @@ const subirFotos = async (habitacionId) => {
 }
 
 const handleFileChange = (event) => {
-  const seleccion = Array.from(event.target.files)  // solo Files
-  archivosImagen.value = [...archivosImagen.value, ...seleccion]  // mantener Files puros
+  const seleccion = Array.from(event.target.files)  
+  archivosImagen.value = [...archivosImagen.value, ...seleccion]  
 
   const nuevosPreview = seleccion.map(file => ({
-    id: nextId++,          // usar el nextId
+    id: nextId++,         
     preview: URL.createObjectURL(file)
   }))
   previews.value = [...previews.value, ...nuevosPreview]
 
-  event.target.value = ''  // limpiar input para poder seleccionar más
+  event.target.value = ''  
 }
 
 const removeFile = (index) => {

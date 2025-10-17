@@ -38,7 +38,7 @@
           </div>
           <div class="form-group">
             <label>Cantidad de huespedes</label>
-            <input v-model="reserva.cantHuespedesHuesped" placeholder="..."/>
+            <input v-model="reserva.cantHuespedes" placeholder="..."/>
           </div>
 
           <div v-if="auth.grupos.includes('propietario')" class="form-group">

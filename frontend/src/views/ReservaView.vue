@@ -40,7 +40,16 @@
         <p><strong>ID Reserva:</strong> {{ reserva.id }}</p>
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
-        <p><strong>Huésped:</strong> {{ reserva.huesped }}</p>
+       <p>
+  <strong>Huésped:</strong>
+  <span v-if="auth.grupos.includes('propietario')">
+    {{ reserva.nombreHuesped }}
+  </span>
+  <span v-else>
+    {{ auth.user.username }}
+  </span>
+</p>
+
         <p><strong>DNI:</strong> {{ reserva.dniHuesped }}</p>
         <p><strong>Cantidad de huespedes:</strong> {{ reserva.cantHuespedes }}</p>
       </div>
