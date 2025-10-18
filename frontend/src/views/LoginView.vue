@@ -1,10 +1,10 @@
 <template>
-  <div class="login-wrapper">
-    <div class="login-image"></div>
+  <div class="contenedor-login">
+    <div class="imagen-login"></div>
 
-    <div class="login-form-container">
-      <v-card class="login-card px-8 py-8" max-width="400" elevation="8">
-        <v-card-title class="justify-center text-h5 font-weight-bold  title-with-line">
+    <div class="contenedor-formulario">
+      <v-card class="tarjeta-login px-8 py-8" max-width="400" elevation="8">
+        <v-card-title class="justify-center text-h5 font-weight-bold titulo-con-linea">
           Iniciar Sesión
         </v-card-title>
 
@@ -17,7 +17,7 @@
               label="Nombre de usuario"
               clearable
               prepend-inner-icon="mdi-account"
-              class="mb-4 input-violeta"
+              class="mb-4 campo-violeta"
             ></v-text-field>
 
             <v-text-field
@@ -28,7 +28,7 @@
               clearable
               prepend-inner-icon="mdi-lock"
               type="password"
-              class="mb-6 input-violeta"
+              class="mb-6 campo-violeta"
             ></v-text-field>
 
             <v-btn
@@ -38,14 +38,14 @@
               type="submit"
               variant="elevated"
               block
-              class="btn-login"
+              class="boton-iniciar"
             >
               Iniciar Sesión
             </v-btn>
 
             <div class="text-center mt-6">
               <p class="text-secondary">¿No tenés una cuenta creada?</p>
-              <v-btn class="btn-register mt-2" to="/Registrarse">
+              <v-btn class="boton-registrarse mt-2" to="/Registrarse">
                 Registrarse
               </v-btn>
             </div>
@@ -86,53 +86,51 @@ const handleLogin = async () => {
   }
 }
 </script>
- 
+
 <style scoped>
 * {
   font-family: 'Poppins', sans-serif;
 }
 
-.login-wrapper {
+.contenedor-login {
   display: flex;
   height: 100vh;
-  background: #94618e; 
+  background: #94618e;
 }
 
-.login-image {
+.imagen-login {
   flex: 1;
   background: url(../../public/InicioSeis.jpg) no-repeat center center;
   background-size: cover;
-  display: none; 
+  display: none;
 }
 
-.login-form-container {
+.contenedor-formulario {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #94618e; 
+  background: #94618e;
 }
 
-
 @media (min-width: 992px) {
-  .login-image {
+  .imagen-login {
     display: block;
   }
-  .login-form-container {
+  .contenedor-formulario {
     flex: 1;
   }
 }
 
-
-.login-card {
-  background: 94618e;
-  color: #49274a; 
+.tarjeta-login {
+  background: #f8eee7; 
+  color: #49274a;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  animation: fadeInUp 0.8s ease;
+  animation: aparecer 0.8s ease;
   padding: 2rem;
 }
 
-@keyframes fadeInUp {
+@keyframes aparecer {
   from {
     transform: translateY(30px);
     opacity: 0;
@@ -143,11 +141,11 @@ const handleLogin = async () => {
   }
 }
 
-.title-with-line {
+.titulo-con-linea {
   position: relative;
   color: #49274a;
 }
-.title-with-line::after {
+.titulo-con-linea::after {
   content: "";
   position: absolute;
   bottom: -6px;
@@ -159,34 +157,32 @@ const handleLogin = async () => {
   border-radius: 3px;
 }
 
-.input-violeta input {
-  color: #49274a; 
-  background-color: #ffffff; 
+.campo-violeta input {
+  color: #49274a;
+  background-color: #ffffff;
 }
-.input-violeta label {
-  color: #49274a; 
+.campo-violeta label {
+  color: #49274a;
 }
-.input-violeta input:focus {
+.campo-violeta input:focus {
   border-bottom: 2px solid #49274a !important;
   box-shadow: 0 2px 6px rgba(73, 39, 74, 0.3);
 }
 
-
-.btn-login {
-  background-color: #f8eee7 !important; 
-  color: #49274a !important; 
+.boton-iniciar {
+  background-color: #f8eee7 !important;
+  color: #49274a !important;
   font-weight: bold;
   text-transform: uppercase;
   transition: all 0.3s ease;
   border: 2px solid #49274a;
 }
-.btn-login:hover {
+.boton-iniciar:hover {
   background-color: #e2d5c7 !important;
   transform: scale(1.02);
 }
 
-
-.btn-register {
+.boton-registrarse {
   background-color: #f4decb !important;
   color: #49274a !important;
   font-weight: bold;
@@ -194,7 +190,7 @@ const handleLogin = async () => {
   padding: 8px 20px;
   transition: all 0.3s ease;
 }
-.btn-register:hover {
+.boton-registrarse:hover {
   background-color: #94618e !important;
   color: #ffffff !important;
   transform: scale(1.05);
@@ -202,7 +198,6 @@ const handleLogin = async () => {
 
 .text-secondary,
 .text-error {
-  color: #49274a !important; 
+  color: #49274a !important;
 }
-
 </style>

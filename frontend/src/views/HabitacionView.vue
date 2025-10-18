@@ -9,11 +9,7 @@
           <h1 class="titulo-principal">Habitacion {{ habitacion.nombre }}</h1>
 
           <p class="habitacion-precio">${{ habitacion.precio }}</p>
-          <p class="habitacion-tipo icono-texto">
-            <img src="../../public/estrella.png" alt="tipo Logo" class="logo-img" />
-            <span>{{ habitacion.tipoHabitacion }}</span>
-          </p>
-
+         
           <div class="habitacion-caracteristicas">
             <div v-if="habitacion.camasSimples > 0" class="icono-texto">
               <img src="../../public/camas.png" alt="Camas simples" class="logo-img"/>
@@ -35,7 +31,7 @@
 
             <div class="icono-texto">
               <img src="../../public/ducha.png" alt="Baño privado" class="logo-img" />
-              <span>{{ habitacion.bañoPrivado ? "Baño privado" : "Baño compartido" }}</span>
+              <span>{{ habitacion.banoPrivado ? "Baño privado" : "Baño compartido" }}</span>
             </div>
 
             <div v-if="habitacion.cocina" class="icono-texto">
@@ -85,7 +81,7 @@
     :circular="true"
     :showThumbnails="true"
     :showIndicators="false"
-    :showItemNavigators="true"
+    :showItemNavigators="false"
     containerStyle="max-width: 600px; border-radius: 12px; overflow: hidden;"
   >
     <template #item="slotProps">
@@ -121,9 +117,6 @@
     <label>Precio:
       <input v-model.number="habitacion.precio" type="number" />
     </label>
-    <label>Tipo:
-      <input v-model="habitacion.tipoHabitacion" />
-    </label>
     <label>Camas simples:
       <input v-model.number="habitacion.camasSimples" type="number" />
     </label>
@@ -131,7 +124,7 @@
       <input v-model.number="habitacion.camasDobles" type="number" />
     </label>
     <label>Baño privado:
-      <input v-model="habitacion.bañoPrivado" type="checkbox" />
+      <input v-model="habitacion.banoPrivado" type="checkbox" />
     </label>
     <label>Cocina:
       <input v-model="habitacion.cocina" type="checkbox" />
@@ -139,10 +132,6 @@
     <label>Desayuno:
       <input v-model="habitacion.desayuno" type="checkbox" />
     </label>
-    <label>Alojamiento ID:
-      <input v-model="habitacion.alojamiento_id" />
-    </label>
-
 
 
     <div class="acciones">

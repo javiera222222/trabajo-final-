@@ -13,7 +13,7 @@
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
         <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-pending']">
-          {{ reserva.pagado ? 'Pagado' : 'Pendiente' }}
+          {{ reserva.pagado ? 'Pagado' : 'Pago pendiente' }}
         </span>
         <router-link :to="`/Reserva/${reserva.id}`" class="detalle-btn">Ver detalles</router-link>
       </div>

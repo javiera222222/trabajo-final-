@@ -11,6 +11,20 @@
             required
           />
 
+           <VTextField
+            type="first-name"
+            v-model="usuario.first_name"
+            label="Nombre"
+            required
+          />
+
+           <VTextField
+            type="last-name"
+            v-model="usuario.last_name"
+            label="Email"
+            required
+          />
+
           <VTextField
             type="email"
             v-model="usuario.email"
@@ -108,6 +122,8 @@ import {
 
 const usuario = ref({
   username: "",
+  first_name:"",
+  last_name:"",
   email: "",
   password: "",
   grupo: "",

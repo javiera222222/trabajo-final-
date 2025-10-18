@@ -33,7 +33,7 @@
           </div>
 
           <div class="form-group">
-            <label>DNI</label>
+            <label>DNI/Pasaporte</label>
             <input v-model="reserva.dniHuesped" placeholder="..."/>
           </div>
           <div class="form-group">
@@ -45,11 +45,12 @@
             <label>Nombre huésped</label>
             <input v-model="reserva.nombreHuesped" placeholder="..."/>
           </div>
+ 
         </div>
 
         <button type="submit" class="btn-guardar">Guardar reserva</button>
 
-        <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="errorMsg" style="color: red">{{ errorMsg }}</p>
       </form>
     </div>
   </div>
@@ -69,6 +70,8 @@ const auth = useAuthStore()
 const error = ref(null)
 const habitacion = ref(null)
 const loading = ref(false)
+const errorMsg = ref('')
+
 
 const reserva = ref({
   cantNoches: 1,
@@ -91,15 +94,20 @@ const crearReserva = async () => {
       error.value = "Completa todos los campos obligatorios";
       return;
     }
+    if (auth.grupos.includes('cliente')) {
+      reserva.value.nombreHuesped = `${auth.user.first_name} ${auth.user.last_name}`}
     reserva.value.habitacion = habitacion.value.id;
     reserva.value.precio = habitacion.value.precio * reserva.value.cantNoches;
     if (reserva.value.checkIn) reserva.value.checkIn += ":00";
     if (reserva.value.checkOut) reserva.value.checkOut += ":00";
     const reservaCreada = await createReserva(reserva.value);
     router.push(`/reserva/${reservaCreada.id}`);
-  } catch (err) {
-    console.error(err.response?.data);
-    error.value = "Error al crear la reserva";
+  }  catch (err) {
+    console.log(" Error al crear reserva:", err.response?.data)
+    errorMsg.value =
+      err.response?.data?.non_field_errors?.[0] ||
+      JSON.stringify(err.response?.data) ||
+      "Error desconocido"
   }
 };
 
@@ -115,8 +123,16 @@ const cargarHabitacion = async () => {
     loading.value = false
   }
 }
+onMounted(() => {
+  cargarHabitacion()
 
-onMounted(cargarHabitacion)
+  console.log('Usuario:', auth.user)
+  if (auth.user) {
+    console.log('Nombre:', auth.user.first_name)
+    console.log('Apellido:', auth.user.last_name)
+  }
+})
+
 </script>
 
 <style scoped>

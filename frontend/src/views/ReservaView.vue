@@ -12,7 +12,7 @@
         </div>
         <div class="resumen-item">
           <h3>${{ reserva.precio }}</h3>
-          <p>Precio</p>
+          <p>Precio total</p>
         </div>
         
         <div class="resumen-item">
@@ -40,17 +40,17 @@
         <p><strong>ID Reserva:</strong> {{ reserva.id }}</p>
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
-       <p>
-  <strong>Huésped:</strong>
+<p>
+  
   <span v-if="auth.grupos.includes('propietario')">
+    <strong>Huésped:</strong>
     {{ reserva.nombreHuesped }}
   </span>
-  <span v-else>
-    {{ auth.user.username }}
-  </span>
+  
 </p>
 
-        <p><strong>DNI:</strong> {{ reserva.dniHuesped }}</p>
+
+        <p><strong>DNI/Pasaporte:</strong> {{ reserva.dniHuesped }}</p>
         <p><strong>Cantidad de huespedes:</strong> {{ reserva.cantHuespedes }}</p>
       </div>
 
@@ -126,6 +126,7 @@ const error = ref(null)
 const editar = ref(false)
 const pagar = ref(false)
 
+
 const pago = ref({
   reserva: route.params.id,
   fecha: new Date().toISOString().slice(0, 19),
@@ -163,6 +164,8 @@ const cargarReserva = async () => {
 
 onMounted(() => {
   cargarReserva()
+  console.log(auth);
+
 })
 
 const editarReserva = async () => {

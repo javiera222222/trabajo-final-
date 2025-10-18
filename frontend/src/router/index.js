@@ -48,6 +48,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const authStore = useAuthStore()
+
     if (to.meta.requiresAuth && !authStore.access) {
         next('/')
     } else {
