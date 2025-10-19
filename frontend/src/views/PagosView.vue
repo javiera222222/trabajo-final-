@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container">
+  <div class="pagos">
      <h1 class="titulo-principal">Registro de pagos</h1>
     <div class="btn-calendario">
       <VBtn  @click="mostrarCalendario = true">
@@ -8,7 +8,7 @@
     </div>
 
     <VDialog v-model="mostrarCalendario" max-width="350">
-      <VCard class="card-calendario">
+      <VCard class="clanedario-card">
         <VDatePicker
           v-model="fechaSeleccionada"
           locale="es"
@@ -39,7 +39,7 @@
           <td>#{{ pago.reserva }}</td>
           <td>{{ formatearFecha(pago.fecha) }}</td>
           <td class="cantidad">${{ pago.cantidad }}</td>
-          <td><span class="badge-metodo">{{ pago.metodoDePago }}</span></td>
+          <td><span class="metodo">{{ pago.metodoDePago }}</span></td>
         </tr>
         <tr v-if="pagosFiltrados.length === 0">
           <td colspan="5" class="no-pagos">❌ No hay pagos para la fecha seleccionada.</td>
@@ -133,12 +133,12 @@ onMounted(() => {
   color: #fff !important;
 }
 
-.card-calendario {
+.clanedario-card {
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   transition: transform 0.2s;
 }
-.card-calendario:hover {
+.clanedario-card:hover {
   transform: scale(1.02);
 }
 
@@ -179,7 +179,7 @@ onMounted(() => {
   color: #16a34a;
 }
 
-.badge-metodo {
+.metodo {
   display: inline-block;
   padding: 0.3rem 0.8rem;
   border-radius: 12px;

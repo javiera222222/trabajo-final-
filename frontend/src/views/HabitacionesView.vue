@@ -1,8 +1,8 @@
 <template>
-  <div class="habitaciones-container">
+  <div class="habitaciones">
     <h1 class="titulo-principal">Habitaciones</h1>
 
-    <div v-if="auth.grupos.includes('cliente')"  class="filtro-container">
+    <div v-if="auth.grupos.includes('cliente')"  class="filtro">
       <label for="ubicacion">Filtrar por ubicación:</label>
       <input 
         id="ubicacion" 
@@ -119,7 +119,7 @@ onMounted(() => {
 
 <style scoped>
 
-.habitaciones-container {
+.habitaciones {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
@@ -146,12 +146,12 @@ onMounted(() => {
 }
 
 
-.filtro-container {
+.filtro {
   margin-bottom: 25px;
   text-align: center;
 }
 
-.filtro-container label {
+.filtro label {
   display: block;
   font-size: 1.2rem;
   font-weight: 600;
@@ -161,7 +161,7 @@ onMounted(() => {
   letter-spacing: 0.5px;
 }
 
-.filtro-container input {
+.filtro input {
   padding: 12px 16px;
   border-radius: 10px;
   border: 2px solid #7b4b8e;
@@ -174,7 +174,7 @@ onMounted(() => {
   transition: all 0.3s;
 }
 
-.filtro-container input:focus {
+.filtro input:focus {
   border-color: #94618e;
   box-shadow: 0 0 10px rgba(148, 97, 142, 0.6);
   background-color: rgba(255, 255, 255, 0.95);

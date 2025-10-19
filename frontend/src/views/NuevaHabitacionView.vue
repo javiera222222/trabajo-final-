@@ -1,57 +1,57 @@
 <template>
-  <div class="form-container">
+  <div class="nueva-habitacion">
     <form class="habitacion-form" @submit.prevent="crearHabitacion">
       <h1 class="titulo-principal">Crea una nueva habitacion</h1>
 
       <div class="form-grid">
-        <div class="form-group">
+        <div class="formularios">
           <label>Nombre</label>
           <input v-model="habitacion.nombre" placeholder="Ej: Suite Deluxe" />
         </div>
 
-        <div class="form-group">
+        <div class="formularios">
           <label>Precio</label>
           <input v-model.number="habitacion.precio" type="number" min="0" />
         </div>
 
-        <div class="form-group">
+        <div class="formularios">
           <label>Camas simples</label>
           <input v-model.number="habitacion.camasSimples" type="number" min="0" />
         </div>
 
-        <div class="form-group">
+        <div class="formularios">
           <label>Camas dobles</label>
           <input v-model.number="habitacion.camasDobles" type="number" min="0" />
         </div>
 
-        <div class="form-group checkbox">
+        <div class="formularios checkbox">
           <label>
             <input v-model="habitacion.banoPrivado" type="checkbox" />
             Baño privado
           </label>
         </div>
 
-        <div class="form-group checkbox">
+        <div class="formularios checkbox">
           <label>
             <input v-model="habitacion.desayuno" type="checkbox" />
             Desayuno
           </label>
         </div>
 
-        <div class="form-group checkbox">
+        <div class="formularios checkbox">
           <label>
             <input v-model="habitacion.cocina" type="checkbox" />
             Cocina
           </label>
         </div>
 
-        <div class="form-group">
+        <div class="formularios">
           <label>Imágenes de la habitación</label>
           <input type="file" multiple @change="handleFileChange" />
         </div>
       </div>
 
-    <div v-if="previews.length" class="preview-list">
+    <div v-if="previews.length" class="preview">
   <p>Vista previa:</p>
   <div v-for="(item, i) in previews" :key="item.id" class="preview-row">
     <img :src="item.preview" alt="Vista previa" class="preview-img" />
@@ -147,7 +147,7 @@ const removeFile = (index) => {
 
 
 <style scoped>
-.form-container {
+.nueva-habitacion {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
@@ -180,21 +180,21 @@ const removeFile = (index) => {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.form-group {
+.formularios {
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
+.formularios label {
   font-size: 0.9rem;
   margin-bottom: 0.3rem;
   color: #94618e;
 }
 
-.form-group input[type='text'],
-.form-group input[type='number'],
-.form-group input[type='date'],
-.form-group input[type='file'] {
+.formularios input[type='text'],
+.formularios input[type='number'],
+.formularios input[type='date'],
+.formularios input[type='file'] {
   padding: 0.6rem;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -203,7 +203,7 @@ const removeFile = (index) => {
   background: #fff;
 }
 
-.form-group input:focus {
+.formularios input:focus {
   border-color: #94618e;
   box-shadow: 0 0 4px #94618e;
 }
@@ -215,7 +215,7 @@ const removeFile = (index) => {
 }
 
 
-.preview-list {
+.preview {
   margin-top: 1rem;
 }
 .preview-row {

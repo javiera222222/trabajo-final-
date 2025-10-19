@@ -1,5 +1,5 @@
 <template>
-  <div v-if="habitacion" class="reserva-container">
+  <div v-if="habitacion" class="nueva-reserva">
     <div class="reserva-card">
       <h1 class="titulo-principal">Crea una nueva reserva</h1>
 
@@ -9,39 +9,39 @@
       </div>
 
       <form class="reserva-form" @submit.prevent="crearReserva">
-        <h3 class="form-title">Nueva Reserva</h3>
+        <h3 class="titulo">Nueva Reserva</h3>
 
         <div class="form-grid">
-          <div class="form-group">
+          <div class="formularios">
             <label>Cantidad de noches</label>
             <input type="number" v-model.number="reserva.cantNoches" min="1" placeholder="..."/>
           </div>
 
-          <div class="form-group">
+          <div class="formularios">
             <label>Desde</label>
             <input type="date" v-model="reserva.desde" />
           </div>
 
-          <div class="form-group">
+          <div class="formularios">
             <label>Hasta</label>
             <input type="date" v-model="reserva.hasta" />
           </div>
 
-          <div class="form-group">
+          <div class="formularios">
             <label>Precio total</label>
             <p class="precio-total">$ {{ habitacion.precio * reserva.cantNoches }}</p>
           </div>
 
-          <div class="form-group">
+          <div class="formularios">
             <label>DNI/Pasaporte</label>
             <input v-model="reserva.dniHuesped" placeholder="..."/>
           </div>
-          <div class="form-group">
+          <div class="formularios">
             <label>Cantidad de huespedes</label>
             <input v-model="reserva.cantHuespedes" placeholder="..."/>
           </div>
 
-          <div v-if="auth.grupos.includes('propietario')" class="form-group">
+          <div v-if="auth.grupos.includes('propietario')" class="formularios">
             <label>Nombre huésped</label>
             <input v-model="reserva.nombreHuesped" placeholder="..."/>
           </div>
@@ -136,7 +136,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.reserva-container {
+.nueva-reserva {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
@@ -180,7 +180,7 @@ onMounted(() => {
   flex-direction: column;
 }
 
-.form-title {
+.titulo {
   text-align: center;
   font-size: 1.4rem;
   font-weight: 600;
@@ -195,21 +195,21 @@ onMounted(() => {
   margin-bottom: 1.5rem;
 }
 
-.form-group {
+.formularios {
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
+.formularios label {
   font-size: 0.95rem;
   font-weight: 600;
   margin-bottom: 0.3rem;
   color: #94618e;
 }
 
-.form-group input[type='text'],
-.form-group input[type='number'],
-.form-group input[type='date'] {
+.formularios input[type='text'],
+.formularios input[type='number'],
+.formularios input[type='date'] {
   padding: 0.6rem;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -217,7 +217,7 @@ onMounted(() => {
   outline: none;
 }
 
-.form-group input:focus {
+.formularios input:focus {
   border-color: #4cafef;
   box-shadow: 0 0 4px rgba(76, 175, 239, 0.4);
 }

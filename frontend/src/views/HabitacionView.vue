@@ -1,7 +1,7 @@
 
 <template>
-  <div class="habitacion-container">
-    <p v-if="loading" class="loading-text">Cargando habitación...</p>
+  <div class="habitacion">
+    <p v-if="loading" class="cargando">Cargando habitación...</p>
 
     <div v-else-if="habitacion" class="habitacion-card">
       <div class="habitacion-layout">
@@ -239,7 +239,7 @@ const irAReservaNueva = () => {
 </script>
 
 <style scoped>
-.habitacion-container {
+.habitacion {
   min-height: 100vh;
   padding: 40px 20px;
   background: url("/public/inicioCuatro.jpg") no-repeat center center fixed;

@@ -1,6 +1,6 @@
 
 <template>
-  <div class="bienvenida-con-nav">
+  <div class="bienvenida">
  
     <nav class="menu-superior">
       <li v-if="!auth.access"><router-link to="/Login">Iniciar Sesión</router-link></li>

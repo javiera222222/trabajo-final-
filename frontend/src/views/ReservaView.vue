@@ -1,7 +1,7 @@
 <template>
-  <div class="reserva-container">
+  <div class="reserva">
    
-    <p v-if="loading">Cargando reserva...</p>
+    <p v-if="cargando">Cargando reserva...</p>
 
     <div v-else-if="reserva" class="reserva-card">
 <h1 class="titulo-principal">Tu reserva</h1>
@@ -16,20 +16,20 @@
         </div>
         
         <div class="resumen-item">
-          <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-danger']">
-            {{ reserva.pagado ? 'Pagado' : 'Pendiente' }}
+          <span :class="['pago', reserva.pagado ? 'pago-hecho' : 'pago-noHecho']">
+            {{ reserva.pagado ? 'Pagado' : 'Pago pendiente' }}
           </span>
           <p>Estado</p>
         </div>
       </div>
 
-      <div class="timeline">
-        <div class="timeline-item">
+      <div class="ingreso">
+        <div class="ingreso-item">
           <strong>Check In</strong>
           <p>{{ formatFecha(reserva.checkIn) }}</p>
         </div>
-        <div class="timeline-line"></div>
-        <div class="timeline-item">
+        <div class="ingreso"></div>
+        <div class="ingreso-item">
           <strong>Check Out</strong>
           <p>{{ formatFecha(reserva.checkOut) }}</p>
         </div>
@@ -55,52 +55,52 @@
       </div>
 
       <div class="acciones" v-if="!editar">
-        <button class="btn success" @click="editar = true">✏️ Editar</button>
-        <button class="btn danger" @click="eliminarReserva">🗑️ Eliminar</button>
+        <button class="btn editar" @click="editar = true"><img src="../../public/lapiz-3d.png" alt="editar logo" class="logo-img"/> Editar</button>
+        <button class="btn eliminar" @click="eliminarReserva"><img src="../../public/eliminar.png" alt="eliminar Logo" class="logo-img"/> Eliminar</button>
         <button 
           v-if="auth.grupos.includes('propietario') && !reserva.pagado" 
-          class="btn success" 
+          class="btn editar" 
           @click="pagar = true">
-          💳 Registrar pago
+           Registrar pago
         </button>
       </div>
 
       <div v-if="editar" class="editar-form">
-        <div class="form-group">
+        <div class="furmularios">
           <label>Cantidad de noches:</label>
           <input v-model="reserva.cantNoches" />
         </div>
 
-        <div class="form-group">
+        <div class="furmularios">
           <label>Fecha de entrada:</label>
           <input type="date" v-model="reserva.desde" />
         </div>
 
-        <div class="form-group">
+        <div class="furmularios">
           <label>Fecha de salida:</label>
           <input type="date" v-model="reserva.hasta" />
          
           <div v-if="auth.grupos.includes('propietario')">
-          <div class="form-group">
+          <div class="furmularios">
             
             <label>Check-in</label>
             <input type="datetime-local" v-model="reserva.checkIn" placeholder="..."/>
           </div>
 
-          <div class="form-group">
+          <div class="furmularios">
             <label>Check-out</label>
             <input type="datetime-local" v-model="reserva.checkOut" placeholder="..." />
           </div>
         </div></div>
 
-        <button class="btn success" @click="editarReserva">Guardar edición</button>
+        <button class="btn editar" @click="editarReserva">Guardar edición</button>
       </div>
 
       <div v-if="pagar" class="pago-card">
         <label>Método de pago:
           <input v-model="pago.metodoDePago" />
         </label>
-        <button class="btn success" @click="GuardarPago">Guardar Pago</button>
+        <button class="btn editar" @click="GuardarPago">Guardar Pago</button>
       </div>
 
     </div>
@@ -121,7 +121,7 @@ const router = useRouter()
 const route = useRoute()
 const auth = useAuthStore()
 const reserva = ref(null)
-const loading = ref(false)
+const cargando = ref(false)
 const error = ref(null)
 const editar = ref(false)
 const pagar = ref(false)
@@ -144,7 +144,7 @@ const formatFecha = (fecha) => {
 }
 
 const cargarReserva = async () => {
-  loading.value = true
+  cargando.value = true
   error.value = null
   try {
     reserva.value = await getReserva(route.params.id)
@@ -157,21 +157,16 @@ const cargarReserva = async () => {
   console.error('Error al actualizar la reserva:', e.response?.data || e.message)
 }
  finally {
-    loading.value = false
+    cargando.value = false
   }
 }
 
-
 onMounted(() => {
-  cargarReserva()
-  console.log(auth);
+  cargarReserva()})
 
-})
 
 const editarReserva = async () => {
   try {
-    
-
     await updateReserva(reserva.value.id, reserva.value);
 
     editar.value = false; 
@@ -206,7 +201,7 @@ const GuardarPago = async () => {
 </script>
 
 <style scoped>
-.reserva-container {
+.reserva {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
@@ -232,13 +227,13 @@ const GuardarPago = async () => {
 }
 .resumen-item { text-align: center; }
 
-.timeline {
+.ingreso {
   display: flex;
   align-items: center;
   margin: 20px 0;
 }
-.timeline-item { flex: 1; text-align: center; }
-.timeline-line {
+.ingreso-item { flex: 1; text-align: center; }
+.ingreso {
   width: 80px;
   height: 4px;
   background: #94618e;
@@ -246,14 +241,14 @@ const GuardarPago = async () => {
   border-radius: 2px;
 }
 
-.badge {
+.pago {
   padding: 5px 12px;
   border-radius: 12px;
   font-size: 14px;
   font-weight: bold;
 }
-.badge-success { background: #28a745; color: white; }
-.badge-danger { background: #dc3545; color: white; }
+.pago-hecho { background: #28a745; color: white; }
+.pago-noHecho { background: #dc3545; color: white; }
 
 .acciones { display: flex; gap: 10px; margin: 15px 0; }
 .btn {
@@ -263,8 +258,8 @@ const GuardarPago = async () => {
   cursor: pointer;
   font-weight: 600;
 }
-.btn.success { background: #94618e; color: white; }
-.btn.danger { background: #dc3545; color: white; }
+.btn.editar { background: #94618e; color: white; }
+.btn.eliminar { background: #dc3545; color: white; }
 
 .editar-form {
   display: flex;
@@ -272,7 +267,7 @@ const GuardarPago = async () => {
   gap: 12px;
   margin-top: 15px;
 }
-.editar-form .form-group {
+.editar-form .furmularios {
   display: flex;
   flex-direction: column;
 }

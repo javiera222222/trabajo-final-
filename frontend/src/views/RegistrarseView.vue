@@ -1,7 +1,7 @@
 <template>
-  <div class="register-container">
-    <div class="form-section">
-      <v-card class="register-card pa-6" elevation="6">
+  <div class="registrarse">
+    <div class="formulario">
+      <v-card class="registrarse-card pa-6" elevation="6">
         <h2 class="text-center mb-6">Registrarse</h2>
 
         <VForm v-if="!mostrarFormularioAlojamiento">
@@ -99,7 +99,7 @@
       </v-card>
     </div>
 
-    <div class="image-section"></div>
+    <div class="foto"></div>
   </div>
 </template>
 
@@ -165,12 +165,12 @@ const guardarAlojamiento = async () => {
 </script>
 
 <style scoped>
-.register-container {
+.registrarse {
   display: flex;
   height: 100vh;
 }
 
-.form-section {
+.formulario {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -178,7 +178,7 @@ const guardarAlojamiento = async () => {
   background-color: #94618e ; 
 }
 
-.register-card {
+.registrarse-card {
   width: 90%;
   max-width: 400px;
   background-color:  rgba(255, 255, 255, 0.9);
@@ -211,14 +211,14 @@ const guardarAlojamiento = async () => {
   text-decoration: underline;
 }
 
-.image-section {
+.foto {
   flex: 1;
   background: url(../../public/hotelregistrarse.jpg) no-repeat center center;
   background-size: cover;
 }
 
 @media (max-width: 768px) {
-  .image-section {
+  .foto {
     display: none;
   }
 }

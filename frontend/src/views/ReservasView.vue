@@ -1,18 +1,18 @@
 <template>
-  <div class="reservas-container">
+  <div class="reservas">
     <h1 class="titulo-principal">Tus reservas</h1>
-    <p v-if="loading" class="loading-text">Cargando reservas...</p>
+    <p v-if="cargando" class="cargando">Cargando reservas...</p>
 
     <div v-else-if="reservas.length > 0" class="reservas-grid">
       <div v-for="reserva in reservas" :key="reserva.id" class="reserva-card">
         <h3>Reserva #{{ reserva.id }}</h3>
         <p><strong>Habitación:</strong> {{ reserva.habitacionNombre }}</p>
-        <p><strong>Huésped:</strong> {{ reserva.huesped || reserva.huesped?.username || '—' }}</p>
+        <p><span v-if="auth.grupos.includes('propietario')"> <strong>Huésped:</strong> {{ reserva.nombreHuesped }} </span></p> 
         <p><strong>Cantidad de huespedes:</strong> {{ reserva.cantHuespedes }}</p>
         <p><strong>Cantidad de noches:</strong> {{ reserva.cantNoches }}</p>
         <p><strong>Desde:</strong> {{ formatFecha(reserva.desde) }}</p>
         <p><strong>Hasta:</strong> {{ formatFecha(reserva.hasta) }}</p>
-        <span :class="['badge', reserva.pagado ? 'badge-success' : 'badge-pending']">
+        <span :class="['pago', reserva.pagado ? 'pago-hecho' : 'pago-noHecho']">
           {{ reserva.pagado ? 'Pagado' : 'Pago pendiente' }}
         </span>
         <router-link :to="`/Reserva/${reserva.id}`" class="detalle-btn">Ver detalles</router-link>
@@ -30,7 +30,7 @@ import { getReservas } from "../api/reserva.js"
 import { gethabitaciones } from "../api/habitacion.js"
 
 const reservas = ref([])
-const loading = ref(false)
+const cargando = ref(false)
 const error = ref(null)
 
 const formatFecha = (fecha) => {
@@ -43,7 +43,7 @@ const formatFecha = (fecha) => {
 }
 
 const cargarReservas = async () => {
-  loading.value = true
+  cargando.value = true
   error.value = null
   reservas.value = []
   try {
@@ -54,12 +54,10 @@ const cargarReservas = async () => {
   const hab = habitacionesArray.find(h => h.id === r.habitacion)
   return { ...r, habitacionNombre: hab ? hab.nombre : "—" }
 })
-
-
      } catch (e) {
     error.value = "Error al cargar reservas"
   } finally {
-    loading.value = false
+    cargando.value = false
   }
 }
 
@@ -67,7 +65,7 @@ onMounted(cargarReservas)
 </script>
 
 <style scoped>
-.reservas-container {
+.reservas {
   min-height: 100vh;
   padding: 30px;
   background: url('/public/inicioCuatro.jpg') no-repeat center center fixed;
@@ -77,7 +75,7 @@ onMounted(cargarReservas)
   align-items: center;
 }
 
-.loading-text {
+.cargando {
   color: #94618e;
   font-weight: bold;
   margin-bottom: 20px;
@@ -106,7 +104,7 @@ onMounted(cargarReservas)
   color: #49274a;
 }
 
-.badge {
+.pago {
   display: inline-block;
   padding: 5px 12px;
   border-radius: 12px;
@@ -116,8 +114,8 @@ onMounted(cargarReservas)
   width: fit-content;
 }
 
-.badge-success { background: #28a745; color: white; }
-.badge-pending { background: #dc3545; color: white; }
+.pago-hecho { background: #28a745; color: white; }
+.pago-noHecho { background: #dc3545; color: white; }
 
 .detalle-btn {
   margin-top: 10px;

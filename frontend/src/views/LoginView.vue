@@ -1,9 +1,9 @@
 <template>
-  <div class="contenedor-login">
-    <div class="imagen-login"></div>
+  <div class="login">
+    <div class="foto"></div>
 
-    <div class="contenedor-formulario">
-      <v-card class="tarjeta-login px-8 py-8" max-width="400" elevation="8">
+    <div class="formulario">
+      <v-card class="login-card px-8 py-8" max-width="400" elevation="8">
         <v-card-title class="justify-center text-h5 font-weight-bold titulo-con-linea">
           Iniciar Sesión
         </v-card-title>
@@ -17,7 +17,7 @@
               label="Nombre de usuario"
               clearable
               prepend-inner-icon="mdi-account"
-              class="mb-4 campo-violeta"
+              class="mb-4 formularios"
             ></v-text-field>
 
             <v-text-field
@@ -28,7 +28,7 @@
               clearable
               prepend-inner-icon="mdi-lock"
               type="password"
-              class="mb-6 campo-violeta"
+              class="mb-6 formularios"
             ></v-text-field>
 
             <v-btn
@@ -45,8 +45,8 @@
 
             <div class="text-center mt-6">
               <p class="text-secondary">¿No tenés una cuenta creada?</p>
-              <v-btn class="boton-registrarse mt-2" to="/Registrarse">
-                Registrarse
+              <v-btn class="boton-registrarse mt-2" to="/registrarse">
+                registrarse
               </v-btn>
             </div>
 
@@ -92,20 +92,20 @@ const handleLogin = async () => {
   font-family: 'Poppins', sans-serif;
 }
 
-.contenedor-login {
+.login {
   display: flex;
   height: 100vh;
   background: #94618e;
 }
 
-.imagen-login {
+.foto {
   flex: 1;
   background: url(../../public/InicioSeis.jpg) no-repeat center center;
   background-size: cover;
   display: none;
 }
 
-.contenedor-formulario {
+.formulario {
   flex: 1;
   display: flex;
   align-items: center;
@@ -114,15 +114,15 @@ const handleLogin = async () => {
 }
 
 @media (min-width: 992px) {
-  .imagen-login {
+  .foto {
     display: block;
   }
-  .contenedor-formulario {
+  .formulario {
     flex: 1;
   }
 }
 
-.tarjeta-login {
+.login-card {
   background: #f8eee7; 
   color: #49274a;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
@@ -157,14 +157,14 @@ const handleLogin = async () => {
   border-radius: 3px;
 }
 
-.campo-violeta input {
+.formularios input {
   color: #49274a;
   background-color: #ffffff;
 }
-.campo-violeta label {
+.formularios label {
   color: #49274a;
 }
-.campo-violeta input:focus {
+.formularios input:focus {
   border-bottom: 2px solid #49274a !important;
   box-shadow: 0 2px 6px rgba(73, 39, 74, 0.3);
 }
